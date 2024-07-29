@@ -1,0 +1,22 @@
+---
+# env_var is an external var to be passed in
+- name: Set facts from environmental variable
+  ansible.builtin.set_fact:
+    current_value: "{{ lookup('ansible.builtin.env', env_var) }}"
+
+- name: Prompt for {{ env_var }}
+  ansible.builtin.pause:
+    prompt: "{{ env_var }}: Enter value or keep blank. Current value: '{{ current_value }}'"
+  register: response
+
+- name: Update bashrc with project vars
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    regexp: "^export {{ env_var }}="
+    line: "export {{ env_var }}='{{ response.user_input }}'"
+  when: response.user_input | length > 0
+
+- name: Print change information
+  ansible.builtin.debug:
+    msg:
+      - "{{ env_var }} updated from {{ current_value }} to {{ response.user_input }}"

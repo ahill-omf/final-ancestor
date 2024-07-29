@@ -1,0 +1,16 @@
+---
+- name: Update Project Environmental Variable
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  no_log: false
+  vars:
+    env_vars:
+      - "ANCESTOR_SOURCE"
+      - "SECONDARY_SOURCE"
+      - "MOLECULE_SCENARIO"
+  tasks:
+    - include_tasks: set_env_var.yml
+      vars:
+        env_var: "{{ item }}"
+      loop: "{{ env_vars }}"

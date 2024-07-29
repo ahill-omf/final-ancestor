@@ -1,0 +1,20 @@
+---
+- name: View Project Environmental Variable
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  no_log: false
+  vars:
+    env_vars:
+      - "ANCESTOR_SOURCE"
+      - "SECONDARY_SOURCE"
+      - "MOLECULE_SCENARIO"
+  tasks:
+    - name: Get environmental variables stored in .bashrc
+      shell: "cat $HOME/.bashrc | grep {{ item }}"
+      loop: "{{ env_vars }}"
+      register: bashrc_vars
+      changed_when: false
+    - name: Print stored environmental variables
+      debug:
+        msg: "{{ bashrc_vars.results | map(attribute='stdout') }}"
