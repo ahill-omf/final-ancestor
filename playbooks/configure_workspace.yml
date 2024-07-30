@@ -4,6 +4,9 @@
   connection: local
   gather_facts: false
   no_log: false
+  vars:
+    - ancestor_project: "final-ancestor"
+    - ancestor_source: "/projects/{{ ancestor_project }}"
   tasks:
     - name: Set facts from environmental variables
       ansible.builtin.set_fact:
@@ -25,4 +28,13 @@
       ansible.builtin.lineinfile:
         path: ~/.bashrc
         regexp: '^export ANCESTOR_SOURCE='
-        line: export ANCESTOR_SOURCE='/projects/ancestor'
+        line: "export ANCESTOR_SOURCE='{{ ancestor_source }}'"
+
+    - name: Remove directory to .code-workspace file
+      ansible.builtin.script: "{{ ancestor_source }}/scripts/remove_from_code_workspace.py {{ ancestor_project }} /projects/"
+      args:
+        executable: python3
+      register: result
+      changed_when: result.rc == 0
+      failed_when: result.rc > 1
+      when: project_source != ancestor_source
