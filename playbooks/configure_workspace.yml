@@ -25,4 +25,4 @@
       ansible.builtin.lineinfile:
         path: ~/.bashrc
         regexp: '^export ANCESTOR_SOURCE='
-        line: export ANCESTOR_SOURCE='/projects/final-ancestor'
+        line: export ANCESTOR_SOURCE='/projects/ancestor'

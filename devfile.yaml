@@ -13,11 +13,12 @@ components:
       env:
         - name: "ANSIBLE_COLLECTIONS_PATH"
           value: "~/.ansible/collections:/usr/share/ansible/collections"
+        - name: "ANCESTOR_SOURCE"
+          value: "/projects/final-ancestor"
 commands:
   - id: install-oc
     exec:
       commandLine: "/usr/local/bin/ansible-playbook $ANCESTOR_SOURCE/playbooks/install_oc.yml"
-      workingDir: "${ANCESTOR_SOURCE}"
       group:
         kind: build
         isDefault: true
@@ -27,7 +28,6 @@ commands:
     exec:
       label: "Configure workspace for tasks"
       commandLine: "/usr/local/bin/ansible-playbook $ANCESTOR_SOURCE/playbooks/configure_workspace.yml"
-      workingDir: "${ANCESTOR_SOURCE}"
       group:
         kind: build
         isDefault: false
@@ -104,7 +104,7 @@ commands:
         fi
         cp /usr/local/lib/python3.11/site-packages/ansible_navigator/data/catalog_collections.py $HOME/.cache/ansible-navigator
         ansible-navigator --ee false
-      workingDir: "{{ project_source }}"
+      workingDir: $PROJECT_SOURCE
       component: tooling-container
 
   - id: get-project-vars
