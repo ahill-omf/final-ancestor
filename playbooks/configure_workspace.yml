@@ -37,4 +37,3 @@
       register: result
       changed_when: result.rc == 0
       failed_when: result.rc > 1
-      when: project_source != ancestor_source
