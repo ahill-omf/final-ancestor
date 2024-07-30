@@ -27,7 +27,7 @@ commands:
     exec:
       label: "Configure workspace for tasks"
       commandLine: "/usr/local/bin/ansible-playbook $ANCESTOR_SOURCE/playbooks/configure_workspace.yml"
-      workingDir: "${ANCESTOR_SOURCE_SOURCE}"
+      workingDir: "${ANCESTOR_SOURCE}"
       group:
         kind: build
         isDefault: false
