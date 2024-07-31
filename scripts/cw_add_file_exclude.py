@@ -9,9 +9,14 @@ import sys
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 file_path = '/projects/.code-workspace'
 
-# Load existing .code-workspace json
-with open(file_path, 'x') as file:
-    workspace = json.load(file)
+# create .code-workspace json
+if not os.path.exists(file_path): 
+    # open(file_path, 'w').close()
+    workspace = dict()
+    workspace['folders'] = []
+else:
+    with open(file_path) as file:
+            workspace = json.load(file)
 logging.debug(workspace)
 
 workspace['settings'] = dict()
