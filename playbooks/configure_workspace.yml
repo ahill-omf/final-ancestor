@@ -30,8 +30,8 @@
         regexp: '^export ANCESTOR_SOURCE='
         line: "export ANCESTOR_SOURCE='{{ ancestor_source }}'"
 
-    - name: Remove directory to .code-workspace file
-      ansible.builtin.script: "{{ ancestor_source }}/scripts/remove_from_code_workspace.py {{ ancestor_project }} /projects/"
+    - name: Add file exclude to .code-workspace file
+      ansible.builtin.script: "{{ ancestor_source }}/scripts/cw_add_file_exclude.py"
       args:
         executable: python3
       register: result
