@@ -28,7 +28,7 @@
         creates: "{{ extensions_dir }}/molecule/{{ scenario_name }}"
     - name: Overwrite molecule scenario files
       ansible.builtin.copy:
-        src: "files/molecule/"
+        src: "../files/molecule/"
         dest: "{{ extensions_dir }}/molecule/{{ scenario_name }}/"
         mode: '0644'
     - name: Update the MOLECULE_SCENARIO environmental variable
