@@ -33,9 +33,19 @@ commands:
         isDefault: false
       component: tooling-container
 
+  - id: molecule-init
+    exec:
+      label: "Molecule 01: generate a new molecule scenario"
+      commandLine: "/usr/local/bin/ansible-playbook {{ project_source }}/playbooks/molecule_init.yml"
+      workingDir: "{{ project_source }}"
+      group:
+        kind: build
+        isDefault: true
+      component: tooling-container
+
   - id: molecule-create
     exec:
-      label: "Molecule 01: start a test pod for the automation"
+      label: "Molecule 02: start a test pod for the automation"
       commandLine: "source $HOME/.bashrc && cd $SECONDARY_SOURCE/extensions && molecule create -s $MOLECULE_SCENARIO"
       group:
         kind: run
@@ -44,7 +54,7 @@ commands:
 
   - id: molecule-list
     exec:
-      label: "Molecule 02: view the test instance that was created"
+      label: "Molecule 03: view the test instance that was created"
       commandLine: "source $HOME/.bashrc && cd $SECONDARY_SOURCE/extensions && molecule list -s $MOLECULE_SCENARIO"
       group:
         kind: run
@@ -53,7 +63,7 @@ commands:
 
   - id: molecule-verify
     exec:
-      label: "Molecule 03: run the verification against the test pod"
+      label: "Molecule 04: run the verification against the test pod"
       commandLine: "source $HOME/.bashrc && cd $SECONDARY_SOURCE/extensions && molecule verify -s $MOLECULE_SCENARIO"
       group:
         kind: run
@@ -62,7 +72,7 @@ commands:
 
   - id: molecule-converge
     exec:
-      label: "Molecule 04: apply the role to the pod"
+      label: "Molecule 05: apply the role to the pod"
       commandLine: "source $HOME/.bashrc && cd $SECONDARY_SOURCE/extensions && molecule converge -s $MOLECULE_SCENARIO"
       group:
         kind: run
@@ -71,6 +81,7 @@ commands:
 
   - id: molecule-destroy
     exec:
+      label: "Molecule 06: destroy molecule pod"
       commandLine: "source $HOME/.bashrc && cd $SECONDARY_SOURCE/extensions && molecule destroy -s $MOLECULE_SCENARIO"
       group:
         kind: run
@@ -79,7 +90,7 @@ commands:
 
   - id: molecule-test
     exec:
-      label: "Molecule 06: run the full molecule test"
+      label: "Molecule 07: run the full molecule test"
       commandLine: "source $HOME/.bashrc && cd $SECONDARY_SOURCE/extensions && molecule test -s $MOLECULE_SCENARIO"
       group:
         kind: run
@@ -88,7 +99,7 @@ commands:
 
   - id: molecule-login
     exec:
-      label: "Molecule 07: login to molecule containers"
+      label: "Molecule 08: login to molecule containers"
       commandLine: "source $HOME/.bashrc && cd $SECONDARY_SOURCE/extensions && molecule login -s $MOLECULE_SCENARIO"
       group:
         kind: debug

@@ -1,0 +1,38 @@
+---
+- name: Create New Molecule Scenario
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  no_log: false
+  vars_prompt:
+    - name: scenario_name
+      prompt: What is the molecule scenario name?
+      private: false
+  tasks:
+    - name: Set facts from environmental variables
+      ansible.builtin.set_fact:
+        project_dir: "{{ lookup('ansible.builtin.env', 'SECONDARY_SOURCE') }}"
+        molecule_scenario: "{{ lookup('ansible.builtin.env', 'MOLECULE_SCENARIO') }}"
+    - name: Set extension directory target
+      ansible.builtin.set_fact:
+        extensions_dir: "{{ project_dir }}/extensions"
+    - name: Create the extensions directory
+      ansible.builtin.file:
+        path: "{{ extensions_dir }}"
+        state: directory
+        mode: '0755'
+    - name: Create molecule scenario
+      ansible.builtin.command:
+        chdir: "{{ extensions_dir }}"
+        cmd: "molecule init scenario {{ scenario_name }}"
+        creates: "{{ extensions_dir }}/molecule/{{ scenario_name }}"
+    - name: Overwrite molecule scenario files
+      ansible.builtin.copy:
+        src: "files/molecule/"
+        dest: "{{ extensions_dir }}/molecule/{{ scenario_name }}/"
+        mode: '0644'
+    - name: Update the MOLECULE_SCENARIO environmental variable
+      ansible.builtin.lineinfile:
+        path: ~/.bashrc
+        regexp: '^export MOLECULE_SCENARIO='
+        line: export MOLECULE_SCENARIO='{{ scenario_name }}'
